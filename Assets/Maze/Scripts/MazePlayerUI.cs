@@ -20,7 +20,8 @@ public class MazePlayerUI : MonoBehaviour {
     private GUIContent m_guiName = new GUIContent("");
     private Rect m_nameRect = new Rect(0,0,0,0);
     private string m_playerName;
-    private static int m_playerNumber = 0;
+
+    public PlayerScore score = new PlayerScore();
 
     // Use this for initialization
     void Start ()
@@ -29,18 +30,19 @@ public class MazePlayerUI : MonoBehaviour {
         m_material = GetComponent<Renderer>().material;
         m_gamepad = GetComponent<HFTGamepad>();
 
-        SetColor(m_playerNumber++);
+        int playerNumber = PlayerManager.AddPlayer(this);
+        SetColor(playerNumber);
+        score.chasing = (playerNumber % 2 == 0);
         SetName(m_gamepad.Name);
 
         // Notify us if the name changes.
         m_gamepad.OnNameChange += ChangeName;
-    }
 
-    void MoveToRandomSpawnPoint()
-    {
-        // Pick a random spawn point
-        int ndx = Random.Range(0, LevelSettings.settings.spawnPoints.Length - 1);
-        transform.localPosition = LevelSettings.settings.spawnPoints[ndx].localPosition;
+        SetName(score.score.ToString());
+        score.catchPlayerEvent += delegate ()
+        {
+            SetName(score.score.ToString());
+        };
     }
 
     void SetName(string name)
@@ -98,7 +100,7 @@ public class MazePlayerUI : MonoBehaviour {
         Vector3 coords = Camera.main.WorldToScreenPoint(nameTransform.position);
         m_nameRect.x = coords.x - size.x * 0.5f - 5f;
         m_nameRect.y = Screen.height - coords.y;
-        m_guiStyle.normal.textColor = Color.black;
+        m_guiStyle.normal.textColor = Color.white;
         m_guiStyle.contentOffset = new Vector2(4, 2);
         GUI.Box(m_nameRect, m_playerName, m_guiStyle);
     }

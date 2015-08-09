@@ -29,10 +29,33 @@ public class MazePlayerMovement : MonoBehaviour
 
     public Vector3 gridOffset = new Vector3(0, -0.2f, 0);
 
+    protected PlayerScore score
+    {
+        get
+        {
+            return playerUI.score;
+        }
+    }
+
+    protected MazePlayerUI playerUI;
+
     protected void Start()
     {
         m_hftInput = GetComponent<HFTInput>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        grid.SnapToGrid(transform);
+        transform.position += gridOffset;
+
+        playerUI = GetComponent<MazePlayerUI>();
+        score.caughtEvent += MoveToRandomSpawnPoint;
+    }
+
+    void MoveToRandomSpawnPoint()
+    {
+        // Pick a random spawn point
+        int ndx = UnityEngine.Random.Range(0, LevelSettings.settings.spawnPoints.Length - 1);
+        transform.localPosition = LevelSettings.settings.spawnPoints[ndx].localPosition;
+
         grid.SnapToGrid(transform);
         transform.position += gridOffset;
     }
@@ -91,7 +114,23 @@ public class MazePlayerMovement : MonoBehaviour
         {
             Vector3 toMove = grid.ijToxyz(ijPos);
             string obstacleTag = "Obstacle";
-            if(!grid.IsTagAtPos(toMove,obstacleTag))
+            string playerTag = "Player";
+            IEnumerable<Collider2D> cols;
+            if (grid.IsTagAtPos(toMove, playerTag, out cols))
+            {
+                Debug.Log("Collided with a player!");
+                //Score!!! maybe
+                foreach(var col in cols)
+                {
+                    MazePlayerUI otherPlayer = col.GetComponent<MazePlayerUI>();
+                    if (otherPlayer != null)
+                    {
+                        Debug.Log("Super collided for sure");
+                        otherPlayer.score.CollideWithPlayer(score);
+                    }
+                }
+            }
+            else if(!grid.IsTagAtPos(toMove,obstacleTag))
             {
                 transform.position = toMove;
                 transform.position += gridOffset;
