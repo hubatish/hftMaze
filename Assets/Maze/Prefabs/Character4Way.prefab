@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDistance: 1
+  gridOffset: {x: 0, y: -.5, z: 0}
 --- !u!114 &11433018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -193,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameTransform: {fileID: 464610}
-  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  baseColor: {r: .611156046, g: 0, b: .676470578, a: 0}
 --- !u!114 &11498156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -246,6 +247,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_GravityScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: baseColor.r
+      value: .611156046
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: baseColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: baseColor.b
+      value: .676470578
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
