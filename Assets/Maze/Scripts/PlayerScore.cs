@@ -21,10 +21,23 @@ public class PlayerScore
 
     public void CatchPlayer()
     {
-        Debug.Log("I caught something!");
         chasing = !chasing;
         score += 1;
         catchPlayerEvent();
+    }
+
+    public override string ToString()
+    {
+        string s;
+        if (chasing)
+        {
+            s = "Seeker";
+        }
+        else
+        {
+            s = "Hider";
+        }
+        return s + score.ToString();
     }
 
     public void CollideWithPlayer(PlayerScore otherPlayer)

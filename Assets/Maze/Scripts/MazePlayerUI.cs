@@ -1,6 +1,7 @@
 ﻿using HappyFunTimes;
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class MazePlayerUI : MonoBehaviour {
 
@@ -23,12 +24,28 @@ public class MazePlayerUI : MonoBehaviour {
 
     public PlayerScore score = new PlayerScore();
 
+    public bool visible
+    {
+        set
+        {
+            spriteRender.enabled = value;
+        }
+        get
+        {
+            return spriteRender.enabled;
+        }
+    }
+
+    private SpriteRenderer spriteRender;
+
     // Use this for initialization
     void Start ()
     {
         m_rigidbody2d = GetComponent<Rigidbody2D>();
         m_material = GetComponent<Renderer>().material;
         m_gamepad = GetComponent<HFTGamepad>();
+
+        spriteRender = gameObject.GetComponent<SpriteRenderer>();
 
         int playerNumber = PlayerManager.AddPlayer(this);
         SetColor(playerNumber);
@@ -38,11 +55,30 @@ public class MazePlayerUI : MonoBehaviour {
         // Notify us if the name changes.
         m_gamepad.OnNameChange += ChangeName;
 
-        SetName(score.score.ToString());
-        score.catchPlayerEvent += delegate ()
+        Action refreshName = delegate ()
         {
-            SetName(score.score.ToString());
+            SetName(score.ToString());
         };
+        score.catchPlayerEvent += refreshName;
+        score.caughtEvent += refreshName;
+        refreshName();
+
+        StartCoroutine(SwitchVisibility());
+    }
+
+    public float visibleTime = 1f;
+    public float inVisibleTime = 5f;
+
+    protected IEnumerator SwitchVisibility()
+    {
+        float time = visibleTime;
+        if (!visible)
+        {
+            time = inVisibleTime;
+        }
+        yield return new WaitForSeconds(time);
+        visible = !visible;
+        StartCoroutine(SwitchVisibility());
     }
 
     void SetName(string name)
@@ -94,6 +130,10 @@ public class MazePlayerUI : MonoBehaviour {
 
     void OnGUI()
     {
+        if (!visible)
+        {
+            return;
+        }
         // If someone knows a better way to do
         // names in Unity3D please tell me!
         Vector2 size = m_guiStyle.CalcSize(m_guiName);

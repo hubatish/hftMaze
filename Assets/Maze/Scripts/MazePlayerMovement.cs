@@ -118,14 +118,12 @@ public class MazePlayerMovement : MonoBehaviour
             IEnumerable<Collider2D> cols;
             if (grid.IsTagAtPos(toMove, playerTag, out cols))
             {
-                Debug.Log("Collided with a player!");
                 //Score!!! maybe
                 foreach(var col in cols)
                 {
                     MazePlayerUI otherPlayer = col.GetComponent<MazePlayerUI>();
                     if (otherPlayer != null)
                     {
-                        Debug.Log("Super collided for sure");
                         otherPlayer.score.CollideWithPlayer(score);
                     }
                 }
