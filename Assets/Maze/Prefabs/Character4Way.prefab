@@ -31,6 +31,7 @@ GameObject:
   - 50: {fileID: 5005980}
   - 114: {fileID: 11411804}
   - 114: {fileID: 11455544}
+  - 114: {fileID: 11443706}
   m_Layer: 5
   m_Name: Character4Way
   m_TagString: Player
@@ -182,6 +183,19 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+--- !u!114 &11443706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0478337cabd0fc498717f17108069b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibleTime: 1
+  inVisibleTime: 5
 --- !u!114 &11455544
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -194,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameTransform: {fileID: 464610}
-  baseColor: {r: .611156046, g: 0, b: .676470578, a: 0}
+  baseColor: {r: 0, g: .596078455, b: .800000012, a: 1}
   score:
     score: 0
     chasing: 0
@@ -253,19 +267,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: baseColor.r
-      value: .611156046
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: baseColor.g
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+      propertyPath: baseColor.g
+      value: .596078455
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: baseColor.b
-      value: .676470578
+      value: .800000012
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: baseColor.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

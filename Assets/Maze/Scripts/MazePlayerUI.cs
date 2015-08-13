@@ -48,7 +48,7 @@ public class MazePlayerUI : MonoBehaviour {
         visibility = gameObject.GetComponent<PlayerVisibility>();
 
         int playerNumber = PlayerManager.AddPlayer(this);
-        SetColor(playerNumber);
+        SetColor(playerNumber-1);
         score.chasing = (playerNumber % 2 == 0);
         SetName(m_gamepad.Name);
 
