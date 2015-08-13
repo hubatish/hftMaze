@@ -39,6 +39,8 @@ public class MazePlayerMovement : MonoBehaviour
 
     protected MazePlayerUI playerUI;
 
+    public Action onBlockHit = delegate () { };
+
     protected void Start()
     {
         m_hftInput = GetComponent<HFTInput>();
@@ -128,8 +130,13 @@ public class MazePlayerMovement : MonoBehaviour
                     }
                 }
             }
-            else if(!grid.IsTagAtPos(toMove,obstacleTag))
+            else if(grid.IsTagAtPos(toMove,obstacleTag))
             {
+                onBlockHit();
+            }
+            else
+            {
+                //actually move!
                 transform.position = toMove;
                 transform.position += gridOffset;
             }

@@ -23,20 +23,20 @@ public class MazePlayerUI : MonoBehaviour {
     private string m_playerName;
 
     public PlayerScore score = new PlayerScore();
-
+    
     public bool visible
     {
         set
         {
-            spriteRender.enabled = value;
+            visibility.visible = value;
         }
         get
         {
-            return spriteRender.enabled;
+            return visibility.visible;
         }
     }
 
-    private SpriteRenderer spriteRender;
+    private PlayerVisibility visibility;
 
     // Use this for initialization
     void Start ()
@@ -45,7 +45,7 @@ public class MazePlayerUI : MonoBehaviour {
         m_material = GetComponent<Renderer>().material;
         m_gamepad = GetComponent<HFTGamepad>();
 
-        spriteRender = gameObject.GetComponent<SpriteRenderer>();
+        visibility = gameObject.GetComponent<PlayerVisibility>();
 
         int playerNumber = PlayerManager.AddPlayer(this);
         SetColor(playerNumber);
@@ -62,23 +62,6 @@ public class MazePlayerUI : MonoBehaviour {
         score.catchPlayerEvent += refreshName;
         score.caughtEvent += refreshName;
         refreshName();
-
-        StartCoroutine(SwitchVisibility());
-    }
-
-    public float visibleTime = 1f;
-    public float inVisibleTime = 5f;
-
-    protected IEnumerator SwitchVisibility()
-    {
-        float time = visibleTime;
-        if (!visible)
-        {
-            time = inVisibleTime;
-        }
-        yield return new WaitForSeconds(time);
-        visible = !visible;
-        StartCoroutine(SwitchVisibility());
     }
 
     void SetName(string name)
