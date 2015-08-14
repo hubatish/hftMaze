@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class PlayerScore
 {
-    public int score = 0;
+    public float score = 0;
     public bool chasing;
 
     public Action caughtEvent = delegate () { };
@@ -22,8 +22,16 @@ public class PlayerScore
     public void CatchPlayer()
     {
         chasing = !chasing;
-        score += 1;
+        //score += 1;
         catchPlayerEvent();
+    }
+
+    public void Update()
+    {
+        if (!chasing)
+        {
+            score += Time.deltaTime;
+        }
     }
 
     public override string ToString()
@@ -37,7 +45,7 @@ public class PlayerScore
         {
             s = "Hider";
         }
-        return s + score.ToString();
+        return s + ((int)score).ToString();
     }
 
     public void CollideWithPlayer(PlayerScore otherPlayer)

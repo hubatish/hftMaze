@@ -49,7 +49,7 @@ public class MazePlayerMovement : MonoBehaviour
         transform.position += gridOffset;
 
         playerUI = GetComponent<MazePlayerUI>();
-        score.caughtEvent += MoveToRandomSpawnPoint;
+        score.catchPlayerEvent += MoveToRandomSpawnPoint;
     }
 
     void MoveToRandomSpawnPoint()

@@ -20,6 +20,8 @@ public class PlayerVisibility : ZBehaviour
         }
     }
 
+    protected bool permanentVisible = false;
+
     //Time until we turn visible
     private Timer turnVisibleTimer = new Timer();
     //Time until turning invisible
@@ -32,7 +34,7 @@ public class PlayerVisibility : ZBehaviour
 
         turnVisibleTimer.Done += BlinkOn;
 
-        turnInvisibleTimer.Start(visibleTime);
+        //turnInvisibleTimer.Start(visibleTime);
 
         Cached<MazePlayerMovement>().onBlockHit += BlinkOn;
     }
@@ -50,20 +52,24 @@ public class PlayerVisibility : ZBehaviour
 
     public void PermanentOn()
     {
+        permanentVisible = true;
         turnInvisibleTimer.on = false;
         turnVisibleTimer.on = false;
         visible = true;
     }
 
-    public void PermanentOff()
+    public void StartBlinking()
     {
-        turnVisibleTimer.on = false;
-        turnInvisibleTimer.on = false;
-        visible = true;
+        permanentVisible = false;
+        BlinkOn();
     }
 
     public void BlinkOn()
     {
+        if (permanentVisible)
+        {
+            return;
+        }
         visible = true;
         turnVisibleTimer.on = false;
         turnInvisibleTimer.Start(visibleTime);
@@ -71,6 +77,10 @@ public class PlayerVisibility : ZBehaviour
 
     public void BlinkOff()
     {
+        if (permanentVisible)
+        {
+            return;
+        }
         visible = false;
         turnInvisibleTimer.on = false;
         turnVisibleTimer.Start(inVisibleTime);

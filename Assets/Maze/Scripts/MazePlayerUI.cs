@@ -55,12 +55,34 @@ public class MazePlayerUI : MonoBehaviour {
         // Notify us if the name changes.
         m_gamepad.OnNameChange += ChangeName;
 
+        score.catchPlayerEvent += delegate() {
+            visibility.StartBlinking();
+            //refreshName();
+        };
+        score.caughtEvent += delegate ()
+        {
+            visibility.PermanentOn();
+            //refreshName();
+        };
+        if (score.chasing)
+        {
+            visibility.PermanentOn();
+        }
+        else
+        {
+            visibility.StartBlinking();
+        }
+
+        //refreshName();
+    }
+
+    void Update()
+    {
+        score.Update();
         Action refreshName = delegate ()
         {
             SetName(score.ToString());
         };
-        score.catchPlayerEvent += refreshName;
-        score.caughtEvent += refreshName;
         refreshName();
     }
 
