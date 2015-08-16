@@ -21,6 +21,7 @@ public class MazePlayerUI : MonoBehaviour {
     private GUIContent m_guiName = new GUIContent("");
     private Rect m_nameRect = new Rect(0,0,0,0);
     private string m_playerName;
+	private NetPlayer m_netPlayer;
 
     public PlayerScore score = new PlayerScore();
     
@@ -50,6 +51,8 @@ public class MazePlayerUI : MonoBehaviour {
         int playerNumber = PlayerManager.AddPlayer(this);
         SetColor(playerNumber-1);
         score.chasing = (playerNumber % 2 == 0);
+		m_netPlayer.SendCmd ("customText", new CustomTextParcel (score.chasing ? "Chase!" : "Hide!"));
+		m_netPlayer.SendCmd ("showGif", new CustomTextParcel("Tom is lazy"));
         SetName(m_gamepad.Name);
 
         // Notify us if the name changes.
@@ -155,5 +158,19 @@ public class MazePlayerUI : MonoBehaviour {
     {
         SetName(m_gamepad.Name);
     }
+	private class CustomTextParcel:MessageCmdData {
+		public CustomTextParcel(String _text)
+		{
+			text=_text;
+		}
+		public string text;
+	}
+	void InitializeNetPlayer(SpawnInfo spawnInfo)
+	{
+		m_netPlayer = spawnInfo.netPlayer;
+		score.caughtEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Zach"));};
+		score.catchPlayerEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Zach"));};
 
+
+	}
 }

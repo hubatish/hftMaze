@@ -427,5 +427,12 @@ requirejs([
 
   gn.init().then(setupDeviceOrientation);
 
+  client.addEventListener('customText', function (data) { $("customText").innerHTML = data.text});
+  client.addEventListener('showGif', function(data){ var kitty = $("kittygif"); kitty.setAttribute("src", "https://groups.google.com/group/philly-dev-night/attach/107fdc341a71f6/anigif_enhanced-17834-1397850025-1.gif?part=0.2&authuser=0") ; setTimeout(function(){
+           kitty.setAttribute("src", "");
+        },3000);
+ })
+  
+  
 });
 
