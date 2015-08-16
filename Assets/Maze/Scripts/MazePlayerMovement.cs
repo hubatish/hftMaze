@@ -40,6 +40,7 @@ public class MazePlayerMovement : MonoBehaviour
     protected MazePlayerUI playerUI;
 
     public Action onBlockHit = delegate () { };
+    public Action<Collider2D> onRewardHit = delegate (Collider2D col) { };
 
     protected void Start()
     {
@@ -50,6 +51,7 @@ public class MazePlayerMovement : MonoBehaviour
 
         playerUI = GetComponent<MazePlayerUI>();
         score.catchPlayerEvent += MoveToRandomSpawnPoint;
+        onRewardHit += score.CollideWithScore;
     }
 
     void MoveToRandomSpawnPoint()
@@ -117,13 +119,14 @@ public class MazePlayerMovement : MonoBehaviour
             Vector3 toMove = grid.ijToxyz(ijPos);
             string obstacleTag = "Obstacle";
             string playerTag = "Player";
+            string rewardTag = "Reward";
             IEnumerable<Collider2D> cols;
             if (grid.IsTagAtPos(toMove, playerTag, out cols))
             {
-                //Score!!! maybe
-                foreach(var col in cols)
+                //Hit other player maybe
+                foreach(var collider in cols)
                 {
-                    MazePlayerUI otherPlayer = col.GetComponent<MazePlayerUI>();
+                    MazePlayerUI otherPlayer = collider.GetComponent<MazePlayerUI>();
                     if (otherPlayer != null)
                     {
                         otherPlayer.score.CollideWithPlayer(score);
@@ -136,6 +139,10 @@ public class MazePlayerMovement : MonoBehaviour
             }
             else
             {
+                if (grid.IsTagAtPos(toMove, rewardTag, out cols))
+                {
+                    onRewardHit(cols.FirstOrDefault());
+                }
                 //actually move!
                 transform.position = toMove;
                 transform.position += gridOffset;

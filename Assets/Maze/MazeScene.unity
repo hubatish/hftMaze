@@ -176,8 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a101a2e66c05f479a9fd99ff49d678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numRows: 100
-  numColumns: 100
+  numRows: 20
+  numColumns: 28
   baseSize: {fileID: 412864, guid: c1d0ed4b171e22e469bdb7e3862addf6, type: 2}
   xBuffer: 1
   yBuffer: 1
@@ -6717,6 +6717,47 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 412864, guid: c1d0ed4b171e22e469bdb7e3862addf6, type: 2}
   m_PrefabInternal: {fileID: 792766170}
+--- !u!1 &792950074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 792950076}
+  - 114: {fileID: 792950075}
+  m_Layer: 0
+  m_Name: FishSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &792950075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 792950074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9bd9fce740a8343a96d614049a2df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fishPrefab: {fileID: 118682, guid: a381f2a4bfadd174387a496872644f6e, type: 2}
+  numberFish: 5
+--- !u!4 &792950076
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 792950074}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1001 &799580743
 Prefab:
   m_ObjectHideFlags: 0

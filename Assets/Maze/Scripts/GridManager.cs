@@ -204,6 +204,7 @@ using System.Linq;
         //All functions below (except for GetHitsAtij) don't really use the grid and are rather a convenience method for checking what objects are at positions
         
         //get first tag at position
+        //  Returns "" if no collisions
         public string GetTagAtPos(Vector3 pos, out Collider2D col)
         {
             RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, Mathf.Infinity, ~(1 << 8));
