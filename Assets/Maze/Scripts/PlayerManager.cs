@@ -22,6 +22,13 @@ public static class PlayerManager
         return _numberPlayers;
     }
 
+    public static int RemovePlayer(MazePlayerUI player)
+    {
+        _players.Remove(player);
+        _numberPlayers--;
+        return _numberPlayers;
+    }
+
     public static MazePlayerUI GetPlayer(int playerNumber)
     {
         return _players[playerNumber];

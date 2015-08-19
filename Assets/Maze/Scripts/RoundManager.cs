@@ -13,11 +13,13 @@ public class RoundManager : MonoBehaviour
 
     protected void Start()
     {
-        countdownTimer.doneEvent += delegate ()
+        Action displayEndScreen = delegate ()
         {
             endScreen.SetActive(true);
             GridManager.Instance.gameObject.SetActive(false);
         };
+        countdownTimer.doneEvent += displayEndScreen;
+        //displayEndScreen();
     }
 }
 

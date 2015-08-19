@@ -14,6 +14,9 @@ public class CountdownDisplay : MonoBehaviour
     [SerializeField]
     private int minutes = 2;
 
+    [SerializeField]
+    private int seconds = 2;
+
     //Do stuff after countdown finished
     public Action doneEvent = delegate () { };
     private bool finished = false; //only call that stuff once
@@ -27,7 +30,7 @@ public class CountdownDisplay : MonoBehaviour
     public void RestartTimer()
     {
         finished = false;
-        goalTime = DateTime.UtcNow + new TimeSpan(0, minutes, 0);
+        goalTime = DateTime.UtcNow + new TimeSpan(0, minutes, seconds);
     }
 
     // Update is called once per frame

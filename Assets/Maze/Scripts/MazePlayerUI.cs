@@ -14,13 +14,22 @@ public class MazePlayerUI : MonoBehaviour {
     // the player.
     public Color baseColor;
 
+    // Current color of player & phone
+    public Color color
+    {
+        get
+        {
+            return m_gamepad.Color;
+        }
+    }
+
     private Rigidbody2D m_rigidbody2d;
     private Material m_material;
     private HFTGamepad m_gamepad;
     private GUIStyle m_guiStyle = new GUIStyle();
     private GUIContent m_guiName = new GUIContent("");
     private Rect m_nameRect = new Rect(0,0,0,0);
-    private string m_playerName;
+    public string playerName;
 	private NetPlayer m_netPlayer;
 
     public PlayerScore score = new PlayerScore();
@@ -91,9 +100,9 @@ public class MazePlayerUI : MonoBehaviour {
 
     void SetName(string name)
     {
-        m_playerName = name;
-        gameObject.name = "Player-" + m_playerName;
-        m_guiName = new GUIContent(m_playerName);
+        playerName = name;
+        gameObject.name = "Player-" + playerName;
+        m_guiName = new GUIContent(playerName);
         Vector2 size = m_guiStyle.CalcSize(m_guiName);
         m_nameRect.width  = size.x + 12;
         m_nameRect.height = size.y + 5;
@@ -150,7 +159,12 @@ public class MazePlayerUI : MonoBehaviour {
         m_nameRect.y = Screen.height - coords.y;
         m_guiStyle.normal.textColor = Color.white;
         m_guiStyle.contentOffset = new Vector2(4, 2);
-        GUI.Box(m_nameRect, m_playerName, m_guiStyle);
+        GUI.Box(m_nameRect, playerName, m_guiStyle);
+    }
+
+    void OnDestroy()
+    {
+        PlayerManager.RemovePlayer(this);
     }
 
     // Called when the user changes their name.
@@ -170,7 +184,5 @@ public class MazePlayerUI : MonoBehaviour {
 		m_netPlayer = spawnInfo.netPlayer;
 		score.caughtEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Zach"));};
 		score.catchPlayerEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Zach"));};
-
-
 	}
 }
