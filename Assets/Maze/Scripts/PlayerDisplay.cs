@@ -12,15 +12,45 @@ public class PlayerDisplay : MonoBehaviour
 {
     public Text score;
     public Text name;
-
     public Image image;
 
-    public void Init(int score, string name, Color color)
+    public MazePlayerUI player;
+
+    public Color color
     {
-        Debug.Log("player's core:" + score);
+        get
+        {
+            return image.color;
+        }
+        set
+        {
+            image.color = value;
+        }
+    }
+
+    protected void Start()
+    {
+        //Colors often update when player's first join, reupdate in a bit
+        //SUPER HACK!!! kill me please
+        Invoke("Refresh", 1.0f);
+    }
+
+    protected void Refresh()
+    {
+        Init(player);
+    }
+
+    public void Init(MazePlayerUI player)
+    {
+        this.player = player;
+        Init((int)player.score.score, player.playerName, player.color);
+    }
+
+    protected void Init(int score, string name, Color color)
+    {
         this.score.text = score.ToString();
         this.name.text = name;
-        this.image.color = color;
+        this.color = color;
     }
 }
 

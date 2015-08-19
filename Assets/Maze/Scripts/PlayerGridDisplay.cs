@@ -27,6 +27,26 @@ public class PlayerGridDisplay : MonoBehaviour
         Init();
     }
 
+    protected void OnEnable()
+    {
+        PlayerManager.playerAddEvent += AddPlayer;
+        PlayerManager.playerRemoveEvent += RemovePlayer;
+    }
+
+    protected void OnDisable()
+    {
+        PlayerManager.playerAddEvent -= AddPlayer;
+        PlayerManager.playerRemoveEvent -= RemovePlayer;
+    }
+
+    protected void AddPlayer(MazePlayerUI player)
+    {
+        PlayerDisplay display = GameObject.Instantiate(displayPrefab);
+        display.GetComponent<RectTransform>().SetParent(displayParent, false);
+        display.Init(player);
+        playerDisplays.Add(display);
+    }
+
     public void Init()
     {
         foreach(var display in playerDisplays)
@@ -37,16 +57,16 @@ public class PlayerGridDisplay : MonoBehaviour
 
         for(int i=0; i < PlayerManager.NumberPlayers; i++)
         {
-            Debug.Log("got a player");
             MazePlayerUI player = PlayerManager.GetPlayer(i);
-
-            PlayerDisplay display = GameObject.Instantiate(displayPrefab);
-            display.GetComponent<RectTransform>().SetParent(displayParent, false);
-
-            display.Init((int)player.score.score, player.playerName,player.color);
-
-            playerDisplays.Add(display);
+            AddPlayer(player);
         }
+    }
+
+    protected void RemovePlayer(MazePlayerUI player)
+    {
+        int pIndex = playerDisplays.FindIndex(display => display.player == player);
+        GameObject.Destroy(playerDisplays[pIndex]);
+        playerDisplays.RemoveAt(pIndex);
     }
 }
 

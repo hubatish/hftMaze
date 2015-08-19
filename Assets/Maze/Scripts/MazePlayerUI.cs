@@ -182,7 +182,7 @@ public class MazePlayerUI : MonoBehaviour {
 	void InitializeNetPlayer(SpawnInfo spawnInfo)
 	{
 		m_netPlayer = spawnInfo.netPlayer;
-		score.caughtEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Zach"));};
-		score.catchPlayerEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Zach"));};
+		score.caughtEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Hider"));};
+		score.catchPlayerEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Hider"));};
 	}
 }

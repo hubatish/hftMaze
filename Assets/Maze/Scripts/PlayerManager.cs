@@ -14,9 +14,16 @@ public static class PlayerManager
         }
     }
 
+    //Is called when a player is added, with the new player passed to listener
+    public static Action<MazePlayerUI> playerAddEvent = delegate (MazePlayerUI p) { };
+
+    //Is called when a player is removed, with the removed player passed to listener before removal
+    public static Action<MazePlayerUI> playerRemoveEvent = delegate (MazePlayerUI p) { };
+
     private static IList<MazePlayerUI> _players = new List<MazePlayerUI>();
     public static int AddPlayer(MazePlayerUI player)
     {
+        playerAddEvent(player);
         _numberPlayers++;
         _players.Add(player);
         return _numberPlayers;
@@ -24,6 +31,7 @@ public static class PlayerManager
 
     public static int RemovePlayer(MazePlayerUI player)
     {
+        playerRemoveEvent(player);
         _players.Remove(player);
         _numberPlayers--;
         return _numberPlayers;
