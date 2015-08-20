@@ -15,13 +15,13 @@ public class PlayerScore
 
     public void GetCaught()
     {
-        chasing = !chasing;
+        //chasing = !chasing;
         caughtEvent();
     }
 
     public void CatchPlayer()
     {
-        chasing = !chasing;
+        //chasing = !chasing;
         score += 1;
         catchPlayerEvent();
     }

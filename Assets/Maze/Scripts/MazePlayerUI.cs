@@ -60,20 +60,23 @@ public class MazePlayerUI : MonoBehaviour {
         int playerNumber = PlayerManager.AddPlayer(this);
         SetColor(playerNumber-1);
         score.chasing = (playerNumber % 2 == 0);
-		m_netPlayer.SendCmd ("customText", new CustomTextParcel (score.chasing ? "Chase!" : "Hide!"));
-		m_netPlayer.SendCmd ("showGif", new CustomTextParcel("Tom is lazy"));
+		m_netPlayer.SendCmd ("customText", new CustomTextParcel (GetPhoneChasingText()));
         SetName(m_gamepad.Name);
 
         // Notify us if the name changes.
         m_gamepad.OnNameChange += ChangeName;
 
         score.catchPlayerEvent += delegate() {
-            visibility.StartBlinking();
+            //visibility.StartBlinking();
             //refreshName();
+            m_netPlayer.SendCmd("showGif", new CustomTextParcel("Tom is lazy"));
         };
         score.caughtEvent += delegate ()
         {
-            visibility.PermanentOn();
+            //visibility.PermanentOn();
+            m_netPlayer.SendCmd("showGif", new CustomTextParcel("Tom is lazy"));
+            m_netPlayer.SendCmd("customText", new CustomTextParcel("You've been caught! Wait till next round."));
+            gameObject.AddComponent<PlayerStartScreen>();
             //refreshName();
         };
         if (score.chasing)
@@ -179,10 +182,16 @@ public class MazePlayerUI : MonoBehaviour {
 		}
 		public string text;
 	}
+
+    protected string GetPhoneChasingText()
+    {
+        return score.chasing ? "Seeker. Chase the birds!" : "Hider. Eat the fish!";
+    }
+
 	void InitializeNetPlayer(SpawnInfo spawnInfo)
 	{
 		m_netPlayer = spawnInfo.netPlayer;
-		score.caughtEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Hider"));};
-		score.catchPlayerEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(score.chasing ? "Seeker" : "Hider"));};
+		score.caughtEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(GetPhoneChasingText()));};
+		score.catchPlayerEvent += delegate (){spawnInfo.netPlayer.SendCmd ("customText", new CustomTextParcel(GetPhoneChasingText()));};
 	}
 }

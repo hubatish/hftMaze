@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
-/// Show player's color/name/stats in horizontal layout group this script is attached to
+/// Show all of the players' color/name/stats in horizontal layout group this script is attached to
+///     Manage adding/deleting of those players' displays as they come & go
+///     Check when all are ready to see if they're good to go
+///     Could also be called StartAndEndScreen or TheMenu
 /// </summary>
 public class PlayerGridDisplay : MonoBehaviour
 {
@@ -18,14 +22,9 @@ public class PlayerGridDisplay : MonoBehaviour
     [SerializeField]
     private RectTransform displayParent;
 
-    protected void Start()
-    {
-        if (displayParent == null)
-        {
-            displayParent = gameObject.GetComponent<RectTransform>();
-        }
-        Init();
-    }
+    public Text titleText;
+
+    public Action onReadyEvent = delegate () {};
 
     protected void Update()
     {
@@ -37,14 +36,22 @@ public class PlayerGridDisplay : MonoBehaviour
                 allReady = false;
             }
         }
-        if (allReady)
+        if (playerDisplays.Count > 1 && allReady)
         {
-            Debug.Log("all are ready");
+            //Won't this get called a lot?
+            //  Usually, but here the onReadyEvent of RoundMangaer will be turning this script off
+            onReadyEvent();
         }
     }
 
     protected void OnEnable()
     {
+        if (displayParent == null)
+        {
+            displayParent = gameObject.GetComponent<RectTransform>();
+        }
+        Init();
+
         PlayerManager.playerAddEvent += AddPlayer;
         PlayerManager.playerRemoveEvent += RemovePlayer;
     }
@@ -53,6 +60,16 @@ public class PlayerGridDisplay : MonoBehaviour
     {
         PlayerManager.playerAddEvent -= AddPlayer;
         PlayerManager.playerRemoveEvent -= RemovePlayer;
+        ClearAllPlayers();
+    }
+
+    protected void ClearAllPlayers()
+    {
+        foreach (var display in playerDisplays)
+        {
+            GameObject.Destroy(display.gameObject);
+        }
+        playerDisplays = new List<PlayerDisplay>();
     }
 
     protected void AddPlayer(MazePlayerUI player)
@@ -65,11 +82,7 @@ public class PlayerGridDisplay : MonoBehaviour
 
     public void Init()
     {
-        foreach(var display in playerDisplays)
-        {
-            GameObject.Destroy(display.gameObject);
-        }
-        playerDisplays = new List<PlayerDisplay>();
+        ClearAllPlayers();
 
         for(int i=0; i < PlayerManager.NumberPlayers; i++)
         {

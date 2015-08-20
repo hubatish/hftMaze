@@ -2515,8 +2515,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detailDisplay: 0
-  minutes: 0
-  seconds: 3
+  minutes: 2
+  seconds: 0
 --- !u!1001 &309599323
 Prefab:
   m_ObjectHideFlags: 0
@@ -7958,7 +7958,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishPrefab: {fileID: 118682, guid: a381f2a4bfadd174387a496872644f6e, type: 2}
-  numberFish: 5
 --- !u!4 &792950076
 Transform:
   m_ObjectHideFlags: 0
@@ -10837,9 +10836,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c10d1b07fd9d22449ac5d5cd6a078a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startScreen: {fileID: 0}
   endScreen: {fileID: 1056462979}
   countdownTimer: {fileID: 300493133}
+  gridDisplay: {fileID: 1905179496}
+  fishspawner: {fileID: 792950075}
 --- !u!4 &1113965048
 Transform:
   m_ObjectHideFlags: 0
@@ -17656,7 +17656,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Round Over
+  m_Text: Hide 'N Fish
 --- !u!222 &1880921067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17929,6 +17929,7 @@ MonoBehaviour:
   displayPrefab: {fileID: 11499646, guid: a5d1be6f6e10888438b90c5316a03f21, type: 2}
   playerDisplays: []
   displayParent: {fileID: 1905179495}
+  titleText: {fileID: 1880921066}
 --- !u!1001 &1911109914
 Prefab:
   m_ObjectHideFlags: 0

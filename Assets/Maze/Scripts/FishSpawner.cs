@@ -9,19 +9,38 @@ public class FishSpawner : MonoBehaviour
     [SerializeField]
     private GameObject fishPrefab;
 
-    [SerializeField]
-    private int numberFish = 5;
+    private int numExtraFish = -1;
 
     protected GridManager grid;
 
     protected void Start()
     {
         grid = GridManager.Instance;
-        SpawnLotsFish();
     }
 
-    protected void SpawnLotsFish()
+    private bool finished = true;
+
+    protected void Update()
     {
+        if (!finished && transform.childCount==0)
+        {
+            finished = true;
+            Debug.Log("Just finished!");
+            RoundManager.Instance.EndGame(false);
+        }
+    }
+
+    public void SpawnLotsFish()
+    {
+        finished = false;
+
+        //Clear previous fish
+        for(int i = transform.childCount-1; i>=0;  i--)
+        {
+            GameObject.Destroy(transform.GetChild(i).gameObject);
+        }
+
+        int numberFish = numExtraFish + PlayerManager.NumberPlayers;
         for(int i = 0; i < numberFish; i++)
         {
             SpawnFish();
@@ -36,7 +55,8 @@ public class FishSpawner : MonoBehaviour
         Vector3 pos = grid.ijToxyz(new GridVector(x, y));
         if(grid.GetHitsAtPos(pos).Count() == 0)
         {
-            GameObject.Instantiate(fishPrefab, pos, Quaternion.identity);
+            Transform newFish = ((GameObject) GameObject.Instantiate(fishPrefab, pos, Quaternion.identity)).transform;
+            newFish.SetParent(transform,true);
         }
         else
         {

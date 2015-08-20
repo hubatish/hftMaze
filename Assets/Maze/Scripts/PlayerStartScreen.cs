@@ -24,12 +24,9 @@ public class PlayerStartScreen : ZBehaviour
     void FixedUpdate()
     {
         // Get left/right input (get both phone and local input)
-        float hMove = Cached<HFTInput>().GetAxis("Horizontal") + Input.GetAxis("Horizontal");
         float vMove = Cached<HFTInput>().GetAxis("Vertical") + Input.GetAxis("Vertical");
 
         float minMove = 0.05f;
-
-        bool justMoved = false;
 
         if (Mathf.Abs(vMove) > minMove)
         {

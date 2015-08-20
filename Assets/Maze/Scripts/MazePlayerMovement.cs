@@ -50,7 +50,8 @@ public class MazePlayerMovement : MonoBehaviour
         transform.position += gridOffset;
 
         playerUI = GetComponent<MazePlayerUI>();
-        score.catchPlayerEvent += MoveToRandomSpawnPoint;
+        MoveToRandomSpawnPoint();
+        //score.catchPlayerEvent += MoveToRandomSpawnPoint;
         onRewardHit += score.CollideWithScore;
     }
 
