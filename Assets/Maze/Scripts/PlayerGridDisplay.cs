@@ -27,6 +27,22 @@ public class PlayerGridDisplay : MonoBehaviour
         Init();
     }
 
+    protected void Update()
+    {
+        bool allReady = true;
+        foreach(PlayerDisplay display in playerDisplays)
+        {
+            if (!display.amReady)
+            {
+                allReady = false;
+            }
+        }
+        if (allReady)
+        {
+            Debug.Log("all are ready");
+        }
+    }
+
     protected void OnEnable()
     {
         PlayerManager.playerAddEvent += AddPlayer;
@@ -65,7 +81,7 @@ public class PlayerGridDisplay : MonoBehaviour
     protected void RemovePlayer(MazePlayerUI player)
     {
         int pIndex = playerDisplays.FindIndex(display => display.player == player);
-        GameObject.Destroy(playerDisplays[pIndex]);
+        GameObject.Destroy(playerDisplays[pIndex].gameObject);
         playerDisplays.RemoveAt(pIndex);
     }
 }

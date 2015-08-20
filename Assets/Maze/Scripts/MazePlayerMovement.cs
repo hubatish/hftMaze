@@ -68,7 +68,7 @@ public class MazePlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         // Get left/right input (get both phone and local input)
-        float move = m_hftInput.GetAxis("Horizontal") + Input.GetAxis("Horizontal");
+        float hMove = m_hftInput.GetAxis("Horizontal") + Input.GetAxis("Horizontal");
         float vMove = m_hftInput.GetAxis("Vertical") + Input.GetAxis("Vertical");
 
         float minMove = 0.05f;
@@ -76,10 +76,10 @@ public class MazePlayerMovement : MonoBehaviour
 
         bool justMoved = false;
 
-        if (Mathf.Abs(move) > minMove && !prevHMove)
+        if (Mathf.Abs(hMove) > minMove && Mathf.Abs(hMove) >= Mathf.Abs(vMove) && !prevHMove)
         {
             justMoved = true;
-            if (move > 0)
+            if (hMove > 0)
             {
                 ijPos.x += 1;
             }
@@ -91,12 +91,12 @@ public class MazePlayerMovement : MonoBehaviour
             //transform.position += Vector3.right * move * moveDistance;
             prevHMove = true;
         }
-        if (Mathf.Abs(move) < minMove)
+        if (Mathf.Abs(hMove) < minMove)
         {
             prevHMove = false;
         }
 
-        if (Mathf.Abs(vMove) > minMove && !prevVMove)
+        if (Mathf.Abs(vMove) > minMove && Mathf.Abs(vMove) > Mathf.Abs(hMove) && !prevVMove)
         {
             justMoved = true;
             if (vMove < 0)

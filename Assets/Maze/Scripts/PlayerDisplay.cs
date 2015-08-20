@@ -16,6 +16,29 @@ public class PlayerDisplay : MonoBehaviour
 
     public MazePlayerUI player;
 
+    //Doesn't make too much sense here, but whatever. This thing will initialize startScreen on the target player
+    protected PlayerStartScreen startScreen;
+
+    [SerializeField]
+    private GameObject readyText;
+    [SerializeField]
+    private GameObject notReadyText;
+
+    public bool amReady
+    {
+        get
+        {
+            return startScreen.amReady;
+        }
+    }
+
+    protected void Update()
+    {
+        //more hackage!
+        readyText.SetActive(amReady);
+        notReadyText.SetActive(!amReady);
+    }
+
     public Color color
     {
         get
@@ -35,6 +58,20 @@ public class PlayerDisplay : MonoBehaviour
         Invoke("Refresh", 1.0f);
     }
 
+    protected bool appIsQuitting = false;
+    protected void OnApplicationQuit()
+    {
+        appIsQuitting = true;
+    }
+
+    protected void OnDisable()
+    {
+        if (!appIsQuitting)
+        {
+            startScreen.KillSelf();
+        }
+    }
+
     protected void Refresh()
     {
         Init(player);
@@ -43,6 +80,7 @@ public class PlayerDisplay : MonoBehaviour
     public void Init(MazePlayerUI player)
     {
         this.player = player;
+        startScreen = player.gameObject.AddComponent<PlayerStartScreen>();
         Init((int)player.score.score, player.playerName, player.color);
     }
 

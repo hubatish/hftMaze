@@ -28,7 +28,7 @@ public class PlayerVisibility : ZBehaviour
     private Timer turnInvisibleTimer = new Timer();
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         turnInvisibleTimer.Done += BlinkOff;
 

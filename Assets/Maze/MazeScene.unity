@@ -2515,8 +2515,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detailDisplay: 0
-  minutes: 2
-  seconds: 0
+  minutes: 0
+  seconds: 3
 --- !u!1001 &309599323
 Prefab:
   m_ObjectHideFlags: 0
