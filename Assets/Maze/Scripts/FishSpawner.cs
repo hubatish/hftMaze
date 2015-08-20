@@ -9,7 +9,7 @@ public class FishSpawner : MonoBehaviour
     [SerializeField]
     private GameObject fishPrefab;
 
-    private int numExtraFish = -1;
+    private int numExtraFish = 0;
 
     protected GridManager grid;
 
@@ -39,7 +39,7 @@ public class FishSpawner : MonoBehaviour
             GameObject.Destroy(transform.GetChild(i).gameObject);
         }
 
-        int numberFish = numExtraFish + PlayerManager.NumberPlayers;
+        int numberFish = numExtraFish + PlayerManager.NumberHiding;
         for(int i = 0; i < numberFish; i++)
         {
             SpawnFish();
