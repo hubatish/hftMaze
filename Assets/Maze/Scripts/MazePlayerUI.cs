@@ -23,6 +23,11 @@ public class MazePlayerUI : MonoBehaviour {
         }
     }
 
+    [SerializeField]
+    private Sprite seekSprite;
+    [SerializeField]
+    private Sprite hideSprite;
+
     private Rigidbody2D m_rigidbody2d;
     private Material m_material;
     private HFTGamepad m_gamepad;
@@ -105,6 +110,16 @@ public class MazePlayerUI : MonoBehaviour {
         {
             visibility.StartBlinking();
         }
+
+        if (chasing)
+        {
+            Debug.Log("Changed to seek sprite?");
+            gameObject.GetComponent<SpriteRenderer>().sprite = seekSprite;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = hideSprite;
+        }
     }
 
     public void Reset()
@@ -169,7 +184,14 @@ public class MazePlayerUI : MonoBehaviour {
         m_guiStyle.normal.background = tex;
 
         // Set the HSVA material of the character to the color adjustments.
-        m_material.SetVector("_HSVAAdjust", new Vector4(hueAdjust, satAdjust, valueAdjust, 0.0f));
+        //if (score.chasing)
+        {
+            GetComponent<SpriteRenderer>().color = playerColor;
+        }
+        //else
+        {
+            m_material.SetVector("_HSVAAdjust", new Vector4(hueAdjust, satAdjust, valueAdjust, 0.0f));
+        }
     }
 
     void OnGUI()
