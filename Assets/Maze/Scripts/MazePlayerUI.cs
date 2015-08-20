@@ -57,10 +57,10 @@ public class MazePlayerUI : MonoBehaviour {
 
         visibility = gameObject.GetComponent<PlayerVisibility>();
 
-        int playerNumber = PlayerManager.AddPlayer(this);
+        PlayerManager.AddPlayer(this);
+        SetChasing(PlayerManager.ShouldISeek());
+        int playerNumber = PlayerManager.NumberPlayers;
         SetColor(playerNumber-1);
-        score.chasing = (playerNumber % 2 == 0);
-		m_netPlayer.SendCmd ("customText", new CustomTextParcel (GetPhoneChasingText()));
         SetName(m_gamepad.Name);
 
         // Notify us if the name changes.
@@ -77,8 +77,26 @@ public class MazePlayerUI : MonoBehaviour {
             m_netPlayer.SendCmd("showGif", new CustomTextParcel("Tom is lazy"));
             m_netPlayer.SendCmd("customText", new CustomTextParcel("You've been caught! Wait till next round."));
             gameObject.AddComponent<PlayerStartScreen>();
-            //refreshName();
+
+            PlayerManager.NumberCaught++;
+
+            //See if the game ends!
+            if (PlayerManager.NumberHiding == PlayerManager.NumberCaught)
+            {
+                RoundManager.Instance.EndGame(true); //seekers win
+            }
         };
+
+        //refreshName();
+    }
+
+    protected bool alreadyDecreased = false;
+
+    public void SetChasing(bool chasing)
+    {
+        score.chasing = chasing;
+        m_netPlayer.SendCmd("customText", new CustomTextParcel(GetPhoneChasingText()));
+
         if (score.chasing)
         {
             visibility.PermanentOn();
@@ -87,8 +105,14 @@ public class MazePlayerUI : MonoBehaviour {
         {
             visibility.StartBlinking();
         }
+    }
 
-        //refreshName();
+    public void Reset()
+    {
+        score.score = 0;
+        PlayerManager.CeaseSeeking(this);
+        alreadyDecreased = false;
+        SetChasing(PlayerManager.ShouldISeek());
     }
 
     void Update()

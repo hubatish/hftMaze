@@ -26,7 +26,9 @@ public class RoundManager : MonoBehaviour
     protected void Start()
     {
         gridDisplay.onReadyEvent += RestartGame;
-        countdownTimer.doneEvent += EndGame;
+        countdownTimer.doneEvent += delegate() {
+            EndGame(false); //hiders win if game goes long
+        };
         EndGame();
     }
 
@@ -51,6 +53,8 @@ public class RoundManager : MonoBehaviour
 
     public void RestartGame()
     {
+        PlayerManager.NumberCaught = 0;
+
         countdownTimer.RestartTimer();
         GridManager.Instance.gameObject.SetActive(true);
         endScreen.SetActive(false);

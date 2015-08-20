@@ -64,11 +64,15 @@ public class PlayerDisplay : MonoBehaviour
         appIsQuitting = true;
     }
 
+    /// <summary>
+    /// The menu has been disabled, so re-enable the player
+    /// </summary>
     protected void OnDisable()
     {
         if (!appIsQuitting)
         {
             startScreen.KillSelf();
+            player.Reset();
         }
     }
 

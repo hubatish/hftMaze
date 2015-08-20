@@ -25,7 +25,6 @@ public class FishSpawner : MonoBehaviour
         if (!finished && transform.childCount==0)
         {
             finished = true;
-            Debug.Log("Just finished!");
             RoundManager.Instance.EndGame(false);
         }
     }
