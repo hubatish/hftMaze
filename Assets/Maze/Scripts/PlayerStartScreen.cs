@@ -18,6 +18,7 @@ public class PlayerStartScreen : ZBehaviour
         Cached<MazePlayerMovement>().enabled = false;
         Cached<PlayerVisibility>().visible = false;
         Cached<PlayerVisibility>().enabled = false;
+        Cached<CircleCollider2D>().enabled = false;
     }
 
     // Update is called once per frame
@@ -40,6 +41,7 @@ public class PlayerStartScreen : ZBehaviour
         Cached<MazePlayerMovement>().enabled = true;
         Cached<PlayerVisibility>().visible = true;
         Cached<PlayerVisibility>().enabled = true;
+        Cached<CircleCollider2D>().enabled = true;
         GameObject.Destroy(this);
     }
 }

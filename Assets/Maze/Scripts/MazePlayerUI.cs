@@ -53,6 +53,8 @@ public class MazePlayerUI : MonoBehaviour {
 
     private PlayerVisibility visibility;
 
+    bool justCaught = false;
+
     // Use this for initialization
     void Start ()
     {
@@ -64,7 +66,7 @@ public class MazePlayerUI : MonoBehaviour {
 
         PlayerManager.AddPlayer(this);
         SetChasing(PlayerManager.ShouldISeek());
-        int playerNumber = PlayerManager.NumberPlayers;
+        int playerNumber = UnityEngine.Random.Range(0,100);//PlayerManager.NumberPlayers;
         SetColor(playerNumber-1);
         SetName(m_gamepad.Name);
 
@@ -79,16 +81,21 @@ public class MazePlayerUI : MonoBehaviour {
         score.caughtEvent += delegate ()
         {
             //visibility.PermanentOn();
-            m_netPlayer.SendCmd("showGif", new CustomTextParcel("Tom is lazy"));
-            m_netPlayer.SendCmd("customText", new CustomTextParcel("You've been caught! Wait till next round."));
-            gameObject.AddComponent<PlayerStartScreen>();
-
-            PlayerManager.NumberCaught++;
-
-            //See if the game ends!
-            if (PlayerManager.NumberHiding == PlayerManager.NumberCaught)
+            if(!justCaught)
             {
-                RoundManager.Instance.EndGame(true); //seekers win
+                m_netPlayer.SendCmd("showGif", new CustomTextParcel("Tom is lazy"));
+                m_netPlayer.SendCmd("customText", new CustomTextParcel("You've been caught! Wait till next round."));
+                gameObject.AddComponent<PlayerStartScreen>();
+
+                PlayerManager.NumberCaught++;
+                Debug.Log("So far caught: " + PlayerManager.NumberCaught);
+
+                //See if the game ends!
+                if (PlayerManager.NumberHiding == PlayerManager.NumberCaught)
+                {
+                    RoundManager.Instance.EndGame(true); //seekers win
+                }
+                justCaught = true;
             }
         };
 
@@ -99,6 +106,7 @@ public class MazePlayerUI : MonoBehaviour {
 
     public void SetChasing(bool chasing)
     {
+        justCaught = false;
         score.chasing = chasing;
         m_netPlayer.SendCmd("customText", new CustomTextParcel(GetPhoneChasingText()));
 
@@ -124,6 +132,7 @@ public class MazePlayerUI : MonoBehaviour {
 
     public void Reset()
     {
+        justCaught = false;
         score.score = 0;
         PlayerManager.CeaseSeeking(this);
         alreadyDecreased = false;
